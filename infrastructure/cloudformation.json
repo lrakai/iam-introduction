@@ -1,0 +1,127 @@
+{
+    "AWSTemplateFormatVersion": "2010-09-09",
+    "Description": "Introduction to IAM",
+    "Parameters": {
+        "Region": {
+            "Type": "String",
+            "Default": "us-west-2"
+        }
+    },
+    "Mappings": {
+        "UserConfig": {
+            "Login": {
+                "Name": "student",
+                "Pass": "password"
+            }
+        }
+    },
+    "Resources": {
+        "Group": {
+            "Type": "AWS::IAM::Group",
+            "Properties": {
+                "GroupName": "Students",
+                "Path": "/",
+                "Policies": [
+                    {
+                        "PolicyName": "students-policy",
+                        "PolicyDocument": {
+                            "Statement": [
+                                {
+                                    "Effect": "Deny",
+                                    "Action": [
+                                        "ec2:ModifyInstanceAttribute",
+                                        "ec2:*Reserved*",
+                                        "ec2:*Spot*",
+                                        "dynamodb:*Reserved*",
+                                        "rds:*Reserved*",
+                                        "elasticache:*Reserved*",
+                                        "redshift:*Reserved*",
+                                        "aws-marketplace:*"
+                                    ],
+                                    "Resource": "*"
+                                },
+                                {
+                                    "Effect": "Allow",
+                                    "Action": [
+                                        "iam:Add*",
+                                        "iam:ChangePassword",
+                                        "iam:Create*",
+                                        "iam:DeactivateMFADevice",
+                                        "iam:Delete*",
+                                        "iam:Detach*",
+                                        "iam:EnableMFADevice",
+                                        "iam:Get*",
+                                        "iam:List*",
+                                        "iam:PassRole",
+                                        "iam:Remove*",
+                                        "iam:ResyncMFADevice",
+                                        "iam:SetDefaultPolicyVersion",
+                                        "iam:Update*",
+                                        "iam:Upload*"
+                                    ],
+                                    "Resource": "*"
+                                },
+                                {
+                                    "Effect": "Deny",
+                                    "Action": [
+                                        "iam:*"
+                                    ],
+                                    "Resource": [
+                                        "arn:aws:iam::*:user/student",
+                                        "arn:aws:iam::*:group/CloudAcademyStudents"
+                                    ]
+                                },
+                                {
+                                    "Effect": "Allow",
+                                    "Action": [
+                                        "iam:AttachGroupPolicy",
+                                        "iam:AttachRolePolicy",
+                                        "iam:PutGroupPolicy",
+                                        "iam:PutRolePolicy"
+                                    ],
+                                    "Resource": [
+                                        "arn:aws:iam::*:user/john",
+                                        "arn:aws:iam::*:user/John",
+                                        "arn:aws:iam::*:group/DevOps",
+                                        "arn:aws:iam::*:group/devops",
+                                        "arn:aws:iam::*:group/Devops"
+                                    ],
+                                    "Condition": {
+                                        "ArnEquals": {
+                                            "iam:PolicyArn": "arn:aws:iam::aws:policy/AmazonEC2ReadOnlyAccess"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                ]
+            }
+        },
+        "User": {
+            "Type": "AWS::IAM::User",
+            "Properties": {
+                "LoginProfile": {
+                    "Password": {
+                        "Fn::FindInMap": [
+                            "UserConfig",
+                            "Login",
+                            "Pass"
+                        ]
+                    }
+                },
+                "Path": "/",
+                "Groups": [
+                    "Students"
+                ],
+                "UserName": {
+                    "Fn::FindInMap": [
+                        "UserConfig",
+                        "Login",
+                        "Name"
+                    ]
+                }
+            }
+        }
+    }
+}

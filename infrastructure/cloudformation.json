@@ -62,7 +62,7 @@
                                     "Resource": "*"
                                 },
                                 {
-                                    "Sid": "DontDenyListAttachedGroupPolicies",
+                                    "Sid": "DontDenyListAttachedGroupPoliciesAndListGroupPolicies",
                                     "Effect": "Deny",
                                     "NotAction": [
                                         "iam:ListAttachedGroupPolicies",
@@ -73,7 +73,7 @@
                                     ]
                                 },
                                 {
-                                    "Sid": "AllowListAttachedGroupPolicies",
+                                    "Sid": "AllowListAttachedGroupPoliciesAndListGroupPolicies",
                                     "Effect": "Allow",
                                     "NotAction": [
                                         "iam:ListAttachedGroupPolicies",

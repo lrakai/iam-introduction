@@ -19,7 +19,7 @@
         "Group": {
             "Type": "AWS::IAM::Group",
             "Properties": {
-                "GroupName": "Students",
+                "GroupName": "CloudAcademyStudents",
                 "Path": "/",
                 "Policies": [
                     {

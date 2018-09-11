@@ -62,13 +62,34 @@
                                     "Resource": "*"
                                 },
                                 {
+                                    "Sid": "DontDenyListAttachedGroupPolicies",
+                                    "Effect": "Deny",
+                                    "NotAction": [
+                                        "iam:ListAttachedGroupPolicies",
+                                        "iam:ListGroupPolicies"
+                                    ],
+                                    "Resource": [
+                                        "arn:aws:iam::*:group/CloudAcademyStudents"
+                                    ]
+                                },
+                                {
+                                    "Sid": "AllowListAttachedGroupPolicies",
+                                    "Effect": "Allow",
+                                    "NotAction": [
+                                        "iam:ListAttachedGroupPolicies",
+                                        "iam:ListGroupPolicies"
+                                    ],
+                                    "Resource": [
+                                        "arn:aws:iam::*:group/CloudAcademyStudents"
+                                    ]
+                                },
+                                {
                                     "Effect": "Deny",
                                     "Action": [
                                         "iam:*"
                                     ],
                                     "Resource": [
-                                        "arn:aws:iam::*:user/student",
-                                        "arn:aws:iam::*:group/CloudAcademyStudents"
+                                        "arn:aws:iam::*:user/student"
                                     ]
                                 },
                                 {
